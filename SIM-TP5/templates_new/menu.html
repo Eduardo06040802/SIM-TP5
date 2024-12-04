@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulación de Inscripción</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            line-height: 1.6;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        form {
+            max-width: 600px;
+            margin: 20px auto;
+            background: #f4f4f4;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        form label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        form input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        form button {
+            background: #5cb85c;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        form button:hover {
+            background: #4cae4c;
+        }
+    </style>
+</head>
+<body>
+    <h1>Simulación de Inscripción a Exámenes</h1>
+    <form method="post" action="/">
+        <label for="equipos">Número de Equipos</label>
+        <input type="number" id="equipos" name="equipos" value="6" min="1" max="10" required>
+    
+        <label for="inf_inscripcion">Tiempo de Inscripción (mínimo, minutos)</label>
+        <input type="number" id="inf_inscripcion" name="inf_inscripcion" value="5" min="1" required>
+    
+        <label for="sup_inscripcion">Tiempo de Inscripción (máximo, minutos)</label>
+        <input type="number" id="sup_inscripcion" name="sup_inscripcion" value="8" min="1" required>
+    
+        <label for="media_llegada">Media de Llegadas (minutos)</label>
+        <input type="number" step="0.01" id="media_llegada" name="media_llegada" value="2.0" min="0.1" required>
+    
+        <label for="mant_min">Tiempo de Mantenimiento (mínimo, minutos)</label>
+        <input type="number" id="mant_min" name="mant_min" value="3" min="1" required>
+    
+        <label for="mant_max">Tiempo de Mantenimiento (máximo, minutos)</label>
+        <input type="number" id="mant_max" name="mant_max" value="10" required>
+    
+        <label for="mant_intervalo">Intervalo de Mantenimiento (minutos)</label>
+        <input type="number" id="mant_intervalo" name="mant_intervalo" value="60" min="1" required>
+    
+        <label for="mant_desviacion">Desviación Estándar Mantenimiento</label>
+        <input type="number" step="0.01" id="mant_desviacion" name="mant_desviacion" value="3.0" min="0.1" required>
+    
+        <label for="max_cola">Máximo Largo de Cola</label>
+        <input type="number" id="max_cola" name="max_cola" value="5" min="1" required>
+    
+        <label for="tiempo_retorno">Tiempo de Retorno (minutos)</label>
+        <input type="number" id="tiempo_retorno" name="tiempo_retorno" value="30" min="1" required>
+    
+        <label for="dias_simulacion">Días de Simulación</label>
+        <input type="number" id="dias_simulacion" name="dias_simulacion" value="1" min="1" required>
+
+        <label for="h">Paso de Integración (h)</label>
+        <input type="number" step="0.01" id="h" name="h" value="0.1" min="0.01" max="1" required>
+    
+        <button type="submit">Iniciar Simulación</button>
+    </form>
+    <script>
+        document.querySelector('form').addEventListener('submit', function(event) {
+            let isValid = true;
+            const inputs = [
+                {a: 'inf_inscripcion', b: 'sup_inscripcion'},
+                {a: 'mant_min', b: 'mant_max'}
+            ];
+
+            inputs.forEach(pair => {
+                const a = parseFloat(document.querySelector(`[name="${pair.a}"]`).value);
+                const b = parseFloat(document.querySelector(`[name="${pair.b}"]`).value);
+    
+                if (a <= 0 || a >= b) {
+                    isValid = false;
+                    alert(`El valor de ${pair.a} debe ser mayor que 0 y menor que ${pair.b}.`);
+                }
+            });
+
+            const h = parseFloat(document.querySelector('[name="h"]').value);
+            if (h <= 0 || h > 1) {
+                isValid = false;
+                alert('El valor de h debe ser mayor que 0 y menor o igual a 1.');
+            }
+    
+            if (!isValid) {
+                event.preventDefault();
+            }
+        });
+    </script>
+    
+    
+</body>
+</html>
